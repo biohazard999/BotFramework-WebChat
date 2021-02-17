@@ -35,20 +35,20 @@ You may have noticed that Web Chat provides two different ways to change the app
 We provide these options to override for several reasons:
 
 -  These are commonly re-styled DOM elements that bot creators want modify in order to provide a specific brand experience
--  Although we support the modification of styling, we want it to be obvious to the user that **we do not guarantee our DOM will always stay the same**, which is why Web Chat uses CSS-in-JS (`glamor`), which generates the class names for Web Chat
+-  Although we support the modification of styling, we want it to be obvious to the user that **we do not guarantee our DOM will always stay the same**, which is why Web Chat uses CSS-in-JS (`emotion`), which generates the class names for Web Chat
 -  We encourage our users to use CSS selectors, such as `& > button > div > ul > li:nth-child`, as opposed to accessing the element by it's class name (e.g. `& > .css-1a2b3c4`) because of the high likelihood that the project will have future class and DOM changes. CSS selectors provide high specificity without the need of using `!important`, and provides implicit information of what element is being styled
 -  `styleSetOptions` is our way of preserving your modifications (without breaking changes!) but allowing the repo to continue to facilitate natural DOM changes that come with an actively updated project
 
 ### My required changes are not all specified in `defaultStyleOptions.js`, what do I do now?
 
 -  Please feel free to [file a PR](https://github.com/microsoft/BotFramework-WebChat/issues/new) requesting the feature you want to be able to brand! We welcome your input and are constantly updating `defaultStyleOptions` with commonly modified aspects of Web Chat.
--  As a last resort, idiosyncratic styling is available, but not supported by our team. You may use this method by following the [02.branding-styling-and-customization/b.idiosyncrating-manual-styles sample](../02.branding-styling-and-customization/b.idiosyncratic-manual-styles/README.md). Please note that using this method creates a **high likelihood** of breaking changes when Web Chat releases new code.
+-  As a last resort, idiosyncratic styling is available, but not supported by our team. You may use this method by following the [02.branding-styling-and-customization/b.idiosyncratic-manual-styles sample](../b.idiosyncratic-manual-styles/README.md). Please note that using this method creates a **high likelihood** of breaking changes when Web Chat releases new code.
 
 ## Getting started
 
 ### Goals of this bot
 
-This sample starts with the [full-bundle CDN sample](./../01.getting-started/a.full-bundle/README.md) as the base template.
+This sample starts with the [full-bundle CDN sample](../../01.getting-started/a.full-bundle/README.md) as the base template.
 
 First, we want to add the `styleOptions` object to our `index.html` page and add the initials as values within the object. This object will be passed into Web Chat. The keys for the bot and user initials are `botAvatarInitials` and `userAvatarInitials`, respectively.
 
@@ -66,13 +66,13 @@ Add the initials for both the user and the bot. The new object should look like 
 Finally, make sure the `styleOptions` object is passed into Web Chat, like so:
 
 ```diff
-…
-window.WebChat.renderWebChat({
--       directLine: window.WebChat.createDirectLine({ token })
-+       directLine: window.WebChat.createDirectLine({ token }),
-+       styleOptions
- }, document.getElementById('webchat'));
- …
+  …
+  window.WebChat.renderWebChat({
+-   directLine: window.WebChat.createDirectLine({ token })
++   directLine: window.WebChat.createDirectLine({ token }),
++   styleOptions
+  }, document.getElementById('webchat'));
+  …
 ```
 
 That's it!
@@ -81,15 +81,23 @@ That's it!
 
 Here is the finished `index.html`:
 
-```diff
+<!-- prettier-ignore-start -->
+```html
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Web Chat: Avatar with images and initials</title>
-    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <title>Web Chat: Custom style options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
     <style>
-      html, body { height: 100% }
-      body { margin: 0 }
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+      }
 
       #webchat {
         height: 100%;
@@ -100,22 +108,21 @@ Here is the finished `index.html`:
   <body>
     <div id="webchat" role="main"></div>
     <script>
-      (async function () {
-        https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-direct-line-3-0-authentication
-
+      (async function() {
         const res = await fetch('https://webchat-mockbot.azurewebsites.net/directline/token', { method: 'POST' });
         const { token } = await res.json();
+        const styleOptions = {
+          bubbleBackground: 'rgba(0, 0, 255, .1)',
+          bubbleFromUserBackground: 'rgba(0, 255, 0, .1)'
+        };
 
-+       const styleOptions = {
-+         botAvatarInitials: 'BF',
-+         userAvatarInitials: 'WC'
-+       };
-
-        window.WebChat.renderWebChat({
--         directLine: window.WebChat.createDirectLine({ token })
-+         directLine: window.WebChat.createDirectLine({ token }),
-+         styleOptions
-        }, document.getElementById('webchat'));
+        window.WebChat.renderWebChat(
+          {
+            directLine: window.WebChat.createDirectLine({ token }),
+            styleOptions
+          },
+          document.getElementById('webchat')
+        );
 
         document.querySelector('#webchat > *').focus();
       })().catch(err => console.error(err));
@@ -123,6 +130,7 @@ Here is the finished `index.html`:
   </body>
 </html>
 ```
+<!-- prettier-ignore-end -->
 
 # Other modifications
 

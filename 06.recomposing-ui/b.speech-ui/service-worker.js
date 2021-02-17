@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/BotFramework-WebChat/06.recomposing-ui/b.speech-ui/precache-manifest.1c1e97c7e661d3d1ef66b7f8a490ded0.js"
+  "/BotFramework-WebChat/06.recomposing-ui/b.speech-ui/precache-manifest.acf2032a580b31d600d02fcd1fa88a22.js"
 );
 
 self.addEventListener('message', (event) => {
@@ -35,5 +35,5 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/BotFramework-WebChat/06.recomposing-ui/b.speech-ui/index.html"), {
   
-  blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
+  blacklist: [/^\/_/,/\/[^/?]+\.[^/]+$/],
 });

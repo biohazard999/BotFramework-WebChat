@@ -2,7 +2,7 @@
 
 > This is a great sample for first-time Web Chat users developing bots that must work on Internet Explorer 11.
 
-A simple web page with a maximized and full-featured Web Chat embed from a CDN. This includes Adaptive Cards, Cognitive Services, and Markdown-It dependencies. This sample makes changes that are based off of the [full-bundle CDN sample](./../01.getting-started/a.full-bundle/README.md).
+A simple web page with a maximized and full-featured Web Chat embed from a CDN. This includes Adaptive Cards, Cognitive Services, and Markdown-It dependencies. This sample makes changes that are based off of the [full-bundle CDN sample][1].
 
 ## Why use this bundle?
 
@@ -11,7 +11,7 @@ If you know that many of your Web Chat users will be using Internet Explorer 11,
 Please note:
 
 -  Web Chat does not support Internet Explorer older than version 11
--  Customization as shown in non-ES5 samples are not supported for Internet Explorer. Because IE11 is a non-modern browser, it does not support ES6, and many samples that use arrow functions and modern promises would need to be manually converted to ES5. If you are in need of heavy customization for your app, we strongly recommend developing your app for a modern browser like Google Chrome or Edge.
+-  Customization as shown in non-ES5 samples are not supported for Internet Explorer. Because IE11 is a non-modern browser, it does not support ES6, and many samples that use arrow functions and modern promises would need to be manually converted to ES5. If you are in need of heavy customization for your app, we strongly recommend developing your app for a modern browser like Google Chrome or Microsoft Edge.
 -  Web Chat has no plan to support samples for IE11 (ES5).
    -  For customers who wish to manually rewrite our other samples to work in IE11, we recommend looking into converting code from ES6+ to ES5 using polyfills and transpilers like [`babel`](https://babeljs.io/docs/en/next/babel-standalone.html).
 
@@ -46,40 +46,49 @@ Polyfills are important for browsers that do not have native technology that is 
 
 ### Goals of this bot
 
-This code features the minimal scripting the bot needs to host a full-featured Web Chat, with IE11 backwards compatibility. We will simply be modifying our dependencies in the `script` tag on our `index.html`, based off of the [full-bundle CDN sample](./../01.getting-started/a.full-bundle/README.md).
+This code features the minimal scripting the bot needs to host a full-featured Web Chat, with IE11 backwards compatibility. We will simply be modifying our dependencies in the `script` tag on our `index.html`, based off of the [full-bundle CDN sample][1].
 The `index.html` page has two main goals.
 
 -  To import the Web Chat full bundle CDN script
 -  To render Web Chat in Internet Explorer 11
 
-We'll start by using the [full-bundle CDN sample](./../01.getting-started/a.full-bundle/README.md) as our Web Chat template.
+We'll start by using the [full-bundle CDN sample][1] as our Web Chat template.
 
 Simply modify the CDN from the full-bundle Web Chat to full es5-polyfill Web Chat.
 
 ```diff
-…
-<head>
-+ <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat-es5.js"></script>
-- <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
-</head>
-…
+  …
+  <head>
++   <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat-es5.js"></script>
+-   <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+  </head>
+  …
 ```
 
 ## Completed code
 
 Here is the finished `index.html`:
 
-```diff
+<!-- prettier-ignore-start -->
+```html
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
     <title>Web Chat: Full-featured bundle with ES5 polyfills</title>
-
-+   <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat-es5.js"></script>
--   <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      crossorigin="anonymous"
+      src="https://cdn.botframework.com/botframework-webchat/latest/webchat-es5.js"
+    ></script>
     <style>
-      html, body { height: 100% }
-      body { margin: 0 }
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+      }
 
       #webchat {
         height: 100%;
@@ -90,26 +99,30 @@ Here is the finished `index.html`:
   <body>
     <div id="webchat" role="main"></div>
     <script>
-      window.fetch('https://webchat-mockbot.azurewebsites.net/directline/token', { method: 'POST' })
-        .then(function (res) {
+      window
+        .fetch('https://webchat-mockbot.azurewebsites.net/directline/token', { method: 'POST' })
+        .then(function(res) {
           return res.json();
         })
-        .then(function (json) {
+        .then(function(json) {
           const token = json.token;
 
-          window.WebChat.renderWebChat({
-            directLine: window.WebChat.createDirectLine({
-              token: token
-            })
-          }, document.getElementById('webchat'));
+          window.WebChat.renderWebChat(
+            {
+              directLine: window.WebChat.createDirectLine({
+                token: token
+              })
+            },
+            document.getElementById('webchat')
+          );
 
           document.querySelector('#webchat > *').focus();
         });
     </script>
   </body>
 </html>
-
 ```
+<!-- prettier-ignore-end -->
 
 # Further reading
 
@@ -130,3 +143,5 @@ Check out the hosted samples and source code for other CDN bundle options below.
 ## Full list of Web Chat hosted samples
 
 View the list of [available Web Chat samples](https://github.com/microsoft/BotFramework-WebChat/tree/master/samples)
+
+[1]: ../a.full-bundle/README.md

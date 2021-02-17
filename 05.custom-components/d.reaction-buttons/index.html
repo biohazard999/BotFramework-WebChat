@@ -6,15 +6,15 @@
     <!--
       For simplicity and code clarity, we are using Babel and React from unpkg.com.
     -->
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/react@16.8.6/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/react-redux@7.1.0/dist/react-redux.min.js"></script>
+    <script crossorigin="anonymous" src="https://unpkg.com/@babel/standalone@7.8.7/babel.min.js"></script>
+    <script crossorigin="anonymous" src="https://unpkg.com/react@16.8.6/umd/react.development.js"></script>
+    <script crossorigin="anonymous" src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js"></script>
+    <script crossorigin="anonymous" src="https://unpkg.com/react-redux@7.1.0/dist/react-redux.min.js"></script>
     <!--
-      This CDN points to the latest official release of Web Chat. If you need to test against Web Chat's latest bits, please refer to pointing to Web Chat's MyGet feed:
+      This CDN points to the latest official release of Web Chat. If you need to test against Web Chat's latest bits, please refer to using Web Chat's latest bits:
       https://github.com/microsoft/BotFramework-WebChat#how-to-test-with-web-chats-latest-bits
     -->
-    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
     <style>
       html,
       body {
@@ -57,8 +57,8 @@
 
   <body>
     <div id="webchat" role="main"></div>
-    <script type="text/babel">
-      (async function() {
+    <script type="text/babel" data-presets="es2015,react,stage-3">
+      (async function () {
         'use strict';
 
         // In this demo, we are using Direct Line token from MockBot.
@@ -111,16 +111,18 @@
 
         const res = await fetch('https://webchat-mockbot.azurewebsites.net/directline/token', { method: 'POST' });
         const { token } = await res.json();
-        const activityMiddleware = () => next => card => {
+        const activityMiddleware = () => next => (...setupArgs) => {
+          const [card] = setupArgs;
+
           if (card.activity.from.role === 'bot') {
-            return children => (
+            return (...renderArgs) => (
               <BotActivityDecorator key={card.activity.id} activityID={card.activity.id}>
-                {next(card)(children)}
+                {next(...setupArgs)(...renderArgs)}
               </BotActivityDecorator>
             );
           }
 
-          return next(card);
+          return next(...setupArgs);
         };
 
         window.ReactDOM.render(

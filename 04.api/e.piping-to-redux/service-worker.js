@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/BotFramework-WebChat/04.api/e.piping-to-redux/precache-manifest.435c3b915fec0589ff53011d450e2003.js"
+  "/BotFramework-WebChat/04.api/e.piping-to-redux/precache-manifest.ef3a33bf5eb9d474e189b2830b54bab8.js"
 );
 
 self.addEventListener('message', (event) => {

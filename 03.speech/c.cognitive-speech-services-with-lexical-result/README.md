@@ -2,7 +2,7 @@
 
 > Cognitive Services Speech Services support is currently in preview. If you encounter any problems, please file us an issue at https://github.com/microsoft/BotFramework-WebChat/issues/.
 
-A simple page with Web Chat integrated with speech-to-text and text-to-speech feature from Cognitive Services Speech Services, with lexical result. This sample makes changes that are based off of the [Cognitive Services Speech Services sample](./../03.speech/b.cognitive-speech-services-js).
+A simple page with Web Chat integrated with speech-to-text and text-to-speech feature from Cognitive Services Speech Services, with lexical result. This sample makes changes that are based off of the [Cognitive Services Speech Services sample][1].
 
 # Test out the hosted sample
 
@@ -23,19 +23,19 @@ A simple page with Web Chat integrated with speech-to-text and text-to-speech fe
 
 ### Goals of this bot
 
-We'll start by using the [Cognitive Services Speech Services sample](./../03.speech/b.cognitive-speech-services-js) as our template.
+We'll start by using the [Cognitive Services Speech Services sample][1] as our template.
 
 The main change you will need to make, regardless of whether you are using the subscription key or authorization token, is adding the value `'lexical'` to a `textNormalization` key in your `webSpeechPonyFillFactory` object.
 
 ```diff
-    const res = await fetch('https://webchat-mockbot.azurewebsites.net/speechservices/token', { method: 'POST' });
-    const { region, token: authorizationToken } = await res.json();
+  const res = await fetch('https://webchat-mockbot.azurewebsites.net/speechservices/token', { method: 'POST' });
+  const { region, token: authorizationToken } = await res.json();
 
-    webSpeechPonyfillFactory = await window.WebChat.createCognitiveServicesSpeechServicesPonyfillFactory({
-+     authorizationToken: fetchSpeechServicesToken,
-+     region: await fetchSpeechServicesRegion()
-+     textNormalization: 'lexical'
-    });
+  webSpeechPonyfillFactory = await window.WebChat.createCognitiveServicesSpeechServicesPonyfillFactory({
+-   credentials: fetchSpeechServicesCredentials
++   credentials: fetchSpeechServicesCredentials,
++   textNormalization: 'lexical'
+  });
 ```
 
 # Further reading
@@ -45,3 +45,5 @@ The main change you will need to make, regardless of whether you are using the s
 ## Full list of Web Chat Hosted Samples
 
 View the list of [available Web Chat samples](https://github.com/microsoft/BotFramework-WebChat/tree/master/samples)
+
+[1]: ../b.cognitive-speech-services-js/README.md
